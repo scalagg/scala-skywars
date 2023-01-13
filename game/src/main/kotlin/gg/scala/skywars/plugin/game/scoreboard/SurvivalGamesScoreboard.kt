@@ -1,0 +1,82 @@
+package gg.scala.skywars.plugin.game.scoreboard
+
+import gg.scala.cgs.common.CgsGameEngine
+import gg.scala.cgs.common.information.arena.CgsGameArena
+import gg.scala.cgs.common.player.handler.CgsPlayerHandler
+import gg.scala.cgs.common.player.scoreboard.CgsGameScoreboardRenderer
+import gg.scala.cgs.common.runnable.state.StartingStateRunnable
+import gg.scala.cgs.common.states.CgsGameState
+import gg.scala.lemon.LemonConstants
+import gg.scala.skywars.plugin.game.SurvivalGamesEngine
+import gg.scala.skywars.plugin.game.listener.SurvivalGamesListener
+import net.evilblock.cubed.util.CC
+import net.evilblock.cubed.util.bukkit.Tasks
+import net.evilblock.cubed.util.nms.MinecraftReflection.getPing
+import net.evilblock.cubed.util.time.TimeUtil
+import org.bukkit.Bukkit
+import org.bukkit.entity.Player
+import java.util.*
+
+/**
+ * @author GrowlyX
+ * @since 12/3/2021
+ */
+object SurvivalGamesScoreboard : CgsGameScoreboardRenderer
+{
+
+    private var remaining = 0
+
+    init
+    {
+        Tasks.asyncTimer({
+            remaining = Bukkit.getOnlinePlayers()
+                .filter { !it.hasMetadata("spectator") }
+                .size
+        }, 0L, 10L)
+    }
+
+    override fun getTitle() = "${CC.B_PRI}Survival Games"
+
+    override fun render(lines: LinkedList<String>, player: Player, state: CgsGameState)
+    {
+        lines.add("${CC.GRAY}${CC.STRIKE_THROUGH}-----------------")
+
+        if (state == CgsGameState.WAITING || state == CgsGameState.STARTING)
+        {
+            if (state == CgsGameState.WAITING)
+            {
+                lines.add("Waiting for players...")
+            } else
+            {
+                lines.add("Starting in ${CC.PRI}${TimeUtil.formatIntoAbbreviatedString(StartingStateRunnable.PRE_START_TIME)}")
+            }
+
+            lines.add("")
+            lines.add("Players: ${CC.PRI}${
+                Bukkit.getOnlinePlayers().size
+            }/${
+                Bukkit.getMaxPlayers()
+            }")
+            lines.add("")
+            lines.add("Mode: ${CC.PRI}${
+                CgsGameEngine.INSTANCE.gameMode.getName()
+            }")
+            lines.add("Version: ${CC.PRI}${
+                CgsGameEngine.INSTANCE.gameInfo.gameVersion
+            }")
+        } else if (state.isAfter(CgsGameState.STARTED))
+        {
+            lines.add("Remaining:")
+            lines.add(CC.PRI + remaining + "/" + CgsGameEngine.INSTANCE.originalRemaining.size)
+            lines.add("")
+            lines.add("Kills:")
+            lines.add(CC.PRI + SurvivalGamesListener.killsTracker[player.uniqueId])
+            lines.add("")
+            lines.add("Map:")
+            lines.add(CC.PRI + CgsGameEngine.INSTANCE.gameArena!!.getName())
+        }
+        lines.add("")
+        lines.add("${CC.PRI}play.${LemonConstants.WEB_LINK}")
+        lines.add("${CC.GRAY}${CC.STRIKE_THROUGH}-----------------")
+    }
+}

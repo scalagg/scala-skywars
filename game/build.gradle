@@ -1,0 +1,10 @@
+repositories {
+    maven { url "https://papermc.io/repo/repository/maven-public/" }
+}
+
+dependencies {
+    implementation project(":shared")
+    compileOnly "io.papermc:paperlib:1.0.7"
+
+    compileOnly "gg.scala.cgs:game:1.1.8"
+}
