@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack
 @IgnoreAutoScan
 class TeleporterKit : Kit
 {
+    override val priority = 3
     override val name: String
         get() = "Teleporter"
     override val icon: Material

@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack
 @IgnoreAutoScan
 class ChickenKit : Kit
 {
+    override val priority = 7
     override val name: String
         get() = "Chicken"
     override val icon: Material

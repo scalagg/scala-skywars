@@ -13,4 +13,6 @@ interface Kit
     val icon: Material
     val armorContents: Array<ItemStack?>
     val inventoryContents: Array<ItemStack?>
+
+    val priority: Int
 }

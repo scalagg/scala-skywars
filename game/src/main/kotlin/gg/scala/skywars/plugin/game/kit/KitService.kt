@@ -29,7 +29,7 @@ object KitService
         val model = PlayerServices.provide(player)
 
         var selectedKit = model?.selectedKit?.let { findKitByName(it) }
-            ?: findKitByName("Armorer") ?: kits.first()
+            ?: findKitByName("Default") ?: kits.first()
 
         GameUtilities.resetPlayer(player)
 

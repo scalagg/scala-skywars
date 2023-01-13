@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionType
 @IgnoreAutoScan
 class ScoutKit : Kit
 {
+    override val priority = 9
     override val name: String
         get() = "Scout"
     override val icon: Material

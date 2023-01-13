@@ -1,5 +1,6 @@
 package gg.scala.skywars.plugin.game.kit.selection
 
+import gg.scala.skywars.plugin.game.kit.Kit
 import gg.scala.skywars.plugin.game.kit.KitService
 import gg.scala.skywars.plugin.game.service.PlayerServices
 import gg.scala.skywars.plugin.game.utilities.GameUtilities
@@ -29,7 +30,7 @@ class KitSelectionMenu : Menu()
                 buttons
             }
 
-        for (kit in KitService.kits)
+        for (kit in KitService.kits.sortedBy(Kit::priority))
         {
             val selected = model.selectedKit == kit.name
             val description = mutableListOf<String>()
@@ -76,6 +77,7 @@ class KitSelectionMenu : Menu()
             buttons[buttons.size] = ItemBuilder
                 .of(kit.icon)
                 .name("${if (selected) CC.RED else CC.GREEN}${kit.name}")
+                .setLore(description)
                 .toButton { _, _ ->
                     if (selected)
                     {

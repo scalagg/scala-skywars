@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack
 @IgnoreAutoScan
 class ArmorerKit : Kit
 {
+    override val priority = 1
     override val name: String
         get() = "Armorer"
     override val icon: Material

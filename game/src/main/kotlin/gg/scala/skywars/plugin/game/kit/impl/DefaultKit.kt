@@ -16,6 +16,8 @@ import org.bukkit.inventory.ItemStack
 @IgnoreAutoScan
 class DefaultKit : Kit
 {
+    override val priority = 0
+
     override val name: String
         get() = "Default"
     override val icon: Material

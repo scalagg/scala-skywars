@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack
 @IgnoreAutoScan
 class PyromanticKit : Kit
 {
+    override val priority = 5
     override val name: String
         get() = "Pyromantic"
     override val icon: Material

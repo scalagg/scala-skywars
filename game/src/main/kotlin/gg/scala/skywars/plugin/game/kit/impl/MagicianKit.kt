@@ -24,6 +24,7 @@ import org.bukkit.potion.PotionType
 @IgnoreAutoScan
 class MagicianKit : Kit
 {
+    override val priority = 8
     override val name: String
         get() = "Magician"
     override val icon: Material

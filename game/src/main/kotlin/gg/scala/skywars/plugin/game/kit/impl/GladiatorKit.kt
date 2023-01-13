@@ -18,6 +18,7 @@ import org.bukkit.inventory.ItemStack
 @IgnoreAutoScan
 class GladiatorKit : Kit
 {
+    override val priority = 2
     override val name: String
         get() = "Gladiator"
     override val icon: Material
