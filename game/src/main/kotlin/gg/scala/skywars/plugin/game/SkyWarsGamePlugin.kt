@@ -90,35 +90,22 @@ class SkyWarsGamePlugin : ExtendedScalaPlugin()
 
         logger.info("Loading resources")
 
-        for (chunk in map.cuboid.getChunks())
+        for (block in map.cuboid.getBlocks())
         {
-            val cx = chunk.x shl 4
-            val cz = chunk.z shl 4
+            val location = block.location.add(0.5, 0.0, 0.5)
 
-            for (x in cx until cx + 16)
+            when (block.type)
             {
-                for (z in cz until cz + 16)
+                Material.BEACON ->
                 {
-                    for (y in 0..127)
-                    {
-                        val block = chunk.getBlock(x, y, z)
-                        val location = block.location.add(0.5, 0.0, 0.5)
+                    block.type = Material.AIR
+                    block.state.update()
 
-                        when (block.type)
-                        {
-                            Material.BEACON ->
-                            {
-                                block.type = Material.AIR
-                                block.state.update()
-
-                                CageService.locations += location
-                            }
-                            Material.CHEST -> ChestRefillService.islandChests.add(mutableListOf(block.location))
-                            Material.TRAPPED_CHEST -> ChestRefillService.middleChests.add(block.location)
-                            else -> { }
-                        }
-                    }
+                    CageService.locations += location
                 }
+                Material.CHEST -> ChestRefillService.islandChests.add(mutableListOf(block.location))
+                Material.TRAPPED_CHEST -> ChestRefillService.middleChests.add(block.location)
+                else -> { }
             }
         }
 
