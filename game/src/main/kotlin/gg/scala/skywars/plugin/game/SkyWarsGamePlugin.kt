@@ -9,7 +9,6 @@ import gg.scala.commons.core.plugin.PluginDependency
 import gg.scala.commons.core.plugin.PluginDependencyComposite
 import gg.scala.commons.core.plugin.PluginWebsite
 import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
-import gg.scala.skywars.plugin.game.listener.SurvivalGamesListener
 
 /**
  * @author GrowlyX
@@ -24,11 +23,11 @@ import gg.scala.skywars.plugin.game.listener.SurvivalGamesListener
 @PluginDependencyComposite(
     PluginDependency("scala-commons"),
     PluginDependency("Lemon"),
-    PluginDependency("CGS-Engine"),
+    PluginDependency("ScGameFramework"),
     PluginDependency("Grape"),
     PluginDependency("cloudsync", soft = true)
 )
-class SurvivalGamesGame : ExtendedScalaPlugin()
+class SkyWarsGamePlugin : ExtendedScalaPlugin()
 {
     @ContainerEnable
     fun containerEnable()
@@ -37,7 +36,7 @@ class SurvivalGamesGame : ExtendedScalaPlugin()
             loadConfig("orchestration.yml")
 
         val mode = orchestration.getString("mode")
-            ?: "gg.scala.survivalgames.shared.gamemode.SurvivalGamesSoloGameMode"
+            ?: "gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloGameMode"
 
         val modeClass = Class.forName(mode)
 
@@ -45,21 +44,13 @@ class SurvivalGamesGame : ExtendedScalaPlugin()
             .getField("INSTANCE")
             .get(null)
 
-        val engine = SurvivalGamesEngine(
+        val engine = SkyWarsEngine(
             this, SkyWarsGameInfo,
             modeClassObject as CgsGameMode
         )
 
         engine.initialLoad()
 
-        flavor {
-            inject(SurvivalGamesListener)
-        }
-
-        server.pluginManager.registerEvents(
-            SurvivalGamesListener, this
-        )
-
-        SurvivalGamesEngine.INSTANCE = engine
+        SkyWarsEngine.INSTANCE = engine
     }
 }

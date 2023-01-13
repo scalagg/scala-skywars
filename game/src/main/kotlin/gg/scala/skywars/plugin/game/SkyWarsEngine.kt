@@ -12,11 +12,10 @@ import gg.scala.cgs.common.voting.VotingMapEntry
 import gg.scala.cgs.common.voting.selection.VoteSelectionType
 import gg.scala.commons.ExtendedScalaPlugin
 import gg.scala.lemon.util.CubedCacheUtil
-import gg.scala.skywars.plugin.game.chest.SurvivalGamesChestService
-import gg.scala.skywars.plugin.game.listener.SurvivalGamesListener
-import gg.scala.skywars.plugin.game.nametag.SurvivalGamesNametagAdapter
-import gg.scala.skywars.plugin.game.scoreboard.SurvivalGamesScoreboard
-import gg.scala.skywars.plugin.game.visibility.SurvivalGamesVisibilityAdapter
+import gg.scala.skywars.plugin.game.listener.SkyWarsListener
+import gg.scala.skywars.plugin.game.frontend.SkyWarsNametagAdapter
+import gg.scala.skywars.plugin.game.frontend.SkyWarsScoreboardAdapter
+import gg.scala.skywars.plugin.game.frontend.SkyWarsVisibilityAdapter
 import gg.scala.skywars.plugin.shared.SkyWarsPlayerModel
 import me.lucko.helper.utils.Players
 import net.evilblock.cubed.util.CC
@@ -32,7 +31,7 @@ import kotlin.properties.Delegates
  * @author GrowlyX
  * @since 12/3/2021
  */
-class SurvivalGamesEngine(
+class SkyWarsEngine(
     plugin: ExtendedScalaPlugin,
     gameInfo: CgsGameGeneralInfo,
     gameMode: CgsGameMode
@@ -44,12 +43,12 @@ class SurvivalGamesEngine(
     companion object
     {
         @JvmStatic
-        var INSTANCE by Delegates.notNull<SurvivalGamesEngine>()
+        var INSTANCE by Delegates.notNull<SkyWarsEngine>()
     }
 
-    override fun getScoreboardRenderer() = SurvivalGamesScoreboard
-    override fun getVisibilityAdapter() = SurvivalGamesVisibilityAdapter
-    override fun getNametagAdapter() = SurvivalGamesNametagAdapter
+    override fun getScoreboardRenderer() = SkyWarsScoreboardAdapter
+    override fun getVisibilityAdapter() = SkyWarsVisibilityAdapter
+    override fun getNametagAdapter() = SkyWarsNametagAdapter
 
     private val votingMapConfiguration = object : VotingMapConfiguration
     {
@@ -92,19 +91,19 @@ class SurvivalGamesEngine(
                 )
             }
 
-            SurvivalGamesListener.spawnPoints
+            SkyWarsListener.spawnPoints
                 .addAll(
                     yaml.getStringList("spawnpoints")
                         .map(::mapToLocation)
                 )
 
-            SurvivalGamesListener.deathMatchSpawnPoints
+            SkyWarsListener.deathMatchSpawnPoints
                 .addAll(
                     yaml.getStringList("deathmatchPoints")
                         .map(::mapToLocation)
                 )
 
-            SurvivalGamesListener.centerLocation =
+            SkyWarsListener.centerLocation =
                 mapToLocation(
                     yaml.getString("center-location")
                 )
@@ -133,7 +132,6 @@ class SurvivalGamesEngine(
 
         override fun onTeleporation()
         {
-            SurvivalGamesChestService.chests.clear()
 
             for (
             (indexed, player) in Players.all()
@@ -144,7 +142,7 @@ class SurvivalGamesEngine(
             )
             {
                 player.teleport(
-                    SurvivalGamesListener.deathMatchSpawnPoints[indexed]
+                    SkyWarsListener.deathMatchSpawnPoints[indexed]
                 )
                 player sit true
             }
@@ -159,7 +157,7 @@ class SurvivalGamesEngine(
             {
                 val topKills = mutableListOf<String>()
 
-                val sortedKills = SurvivalGamesListener.killsTracker
+                val sortedKills = SkyWarsListener.killsTracker
                     .entries.sortedByDescending { it.value }
 
                 for (i in 0 until 3.coerceAtMost(sortedKills.size))

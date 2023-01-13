@@ -1,17 +1,13 @@
-package gg.scala.skywars.plugin.game.scoreboard
+package gg.scala.skywars.plugin.game.frontend
 
 import gg.scala.cgs.common.CgsGameEngine
-import gg.scala.cgs.common.information.arena.CgsGameArena
-import gg.scala.cgs.common.player.handler.CgsPlayerHandler
 import gg.scala.cgs.common.player.scoreboard.CgsGameScoreboardRenderer
 import gg.scala.cgs.common.runnable.state.StartingStateRunnable
 import gg.scala.cgs.common.states.CgsGameState
 import gg.scala.lemon.LemonConstants
-import gg.scala.skywars.plugin.game.SurvivalGamesEngine
-import gg.scala.skywars.plugin.game.listener.SurvivalGamesListener
+import gg.scala.skywars.plugin.game.listener.SkyWarsListener
 import net.evilblock.cubed.util.CC
 import net.evilblock.cubed.util.bukkit.Tasks
-import net.evilblock.cubed.util.nms.MinecraftReflection.getPing
 import net.evilblock.cubed.util.time.TimeUtil
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -21,9 +17,8 @@ import java.util.*
  * @author GrowlyX
  * @since 12/3/2021
  */
-object SurvivalGamesScoreboard : CgsGameScoreboardRenderer
+object SkyWarsScoreboardAdapter : CgsGameScoreboardRenderer
 {
-
     private var remaining = 0
 
     init
@@ -35,7 +30,7 @@ object SurvivalGamesScoreboard : CgsGameScoreboardRenderer
         }, 0L, 10L)
     }
 
-    override fun getTitle() = "${CC.B_PRI}Survival Games"
+    override fun getTitle() = "${CC.B_PRI}SkyWars ${CC.GRAY}(Beta)"
 
     override fun render(lines: LinkedList<String>, player: Player, state: CgsGameState)
     {
@@ -70,13 +65,14 @@ object SurvivalGamesScoreboard : CgsGameScoreboardRenderer
             lines.add(CC.PRI + remaining + "/" + CgsGameEngine.INSTANCE.originalRemaining.size)
             lines.add("")
             lines.add("Kills:")
-            lines.add(CC.PRI + SurvivalGamesListener.killsTracker[player.uniqueId])
+            lines.add(CC.PRI + SkyWarsListener.killsTracker[player.uniqueId])
             lines.add("")
             lines.add("Map:")
             lines.add(CC.PRI + CgsGameEngine.INSTANCE.gameArena!!.getName())
         }
+
         lines.add("")
-        lines.add("${CC.PRI}play.${LemonConstants.WEB_LINK}")
+        lines.add("${CC.PRI}${LemonConstants.WEB_LINK}")
         lines.add("${CC.GRAY}${CC.STRIKE_THROUGH}-----------------")
     }
 }

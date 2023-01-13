@@ -1,4 +1,4 @@
-package gg.scala.skywars.plugin.game.nametag
+package gg.scala.skywars.plugin.game.frontend
 
 import gg.scala.cgs.common.player.CgsGamePlayer
 import gg.scala.cgs.common.player.nametag.CgsGameNametagAdapter
@@ -10,7 +10,7 @@ import net.evilblock.cubed.util.CC
  * @author GrowlyX
  * @since 12/3/2021
  */
-object SurvivalGamesNametagAdapter : CgsGameNametagAdapter
+object SkyWarsNametagAdapter : CgsGameNametagAdapter
 {
     @JvmStatic
     val RED_TAG = NametagProvider

@@ -7,7 +7,7 @@ import gg.scala.cgs.lobby.updater.CgsGameInfoUpdater
 import gg.scala.skywars.plugin.lobby.ranking.TopGamesRankingEntry
 import gg.scala.skywars.plugin.lobby.ranking.TopKillsRankingEntry
 import gg.scala.skywars.plugin.lobby.ranking.TopWinsRankingEntry
-import gg.scala.skywars.plugin.lobby.scoreboard.SurvivalGamesLobbyScoreboard
+import gg.scala.skywars.plugin.lobby.scoreboard.SkyWarsLobbyScoreboard
 import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
 import gg.scala.skywars.plugin.shared.SkyWarsPlayerModel
 import gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloGamemode
@@ -23,7 +23,7 @@ import java.util.*
  * @author GrowlyX
  * @since 2/22/2022
  */
-object SurvivalGamesLobbyEngine : CgsGameLobby<SkyWarsPlayerModel>(
+object SkyWarsLobbyEngine : CgsGameLobby<SkyWarsPlayerModel>(
     SkyWarsPlayerModel::class
 )
 {
@@ -61,19 +61,19 @@ object SurvivalGamesLobbyEngine : CgsGameLobby<SkyWarsPlayerModel>(
 
     override fun getGameModeButtons() = mutableMapOf(
         13 to ItemBuilder(Material.FISHING_ROD)
-            .name("${CC.D_AQUA}Survival Games")
+            .name("${CC.PRI}Solo")
             .addToLore(
-                "${CC.SEC}Join a game of",
-                "${CC.SEC}Survival Games!",
+                "${CC.GRAY}Join a game of",
+                "${CC.GRAY}Solo SkyWars!",
                 "",
-                " ${CC.SEC}In Game: ${CC.AQUA}${CgsGameInfoUpdater.gameModeCounts["solo"]}",
+                " ${CC.WHITE}In Game: ${CC.PRI}${CgsGameInfoUpdater.gameModeCounts["solo"]}",
                 "",
                 "${CC.GREEN}Click to join game!"
             )
             .toButton { player, _ ->
                 val server = CgsGameInfoUpdater
                     .findAvailableServer(
-                        SkyWarsSoloGamemode, "Survival Games"
+                        SkyWarsSoloGamemode, "SkyWars"
                     )
 
                 if (server != null)
@@ -94,5 +94,5 @@ object SurvivalGamesLobbyEngine : CgsGameLobby<SkyWarsPlayerModel>(
     )
 
     override fun getScoreboardAdapter() =
-        SurvivalGamesLobbyScoreboard
+        SkyWarsLobbyScoreboard
 }

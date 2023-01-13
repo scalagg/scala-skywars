@@ -22,14 +22,14 @@ import gg.scala.commons.core.plugin.PluginWebsite
 @PluginDependencyComposite(
     PluginDependency("scala-commons"),
     PluginDependency("Lemon"),
-    PluginDependency("CGS-Lobby"),
+    PluginDependency("ScGameLobby"),
     PluginDependency("cloudsync", soft = true),
 )
-class SurvivalGamesLobby : ExtendedScalaPlugin()
+class SkyWarsLobbyPlugin : ExtendedScalaPlugin()
 {
     @ContainerEnable
     fun containerEnable()
     {
-        CgsGameLobby.INSTANCE = SurvivalGamesLobbyEngine
+        CgsGameLobby.INSTANCE = SkyWarsLobbyEngine
     }
 }

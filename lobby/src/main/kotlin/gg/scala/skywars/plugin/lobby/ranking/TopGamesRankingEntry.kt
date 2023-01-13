@@ -2,7 +2,7 @@ package gg.scala.skywars.plugin.lobby.ranking
 
 import gg.scala.cgs.common.player.CgsGamePlayer
 import gg.scala.cgs.lobby.leaderboard.CgsLobbyRankingEntry
-import gg.scala.skywars.plugin.lobby.SurvivalGamesLobbyEngine
+import gg.scala.skywars.plugin.lobby.SkyWarsLobbyEngine
 
 /**
  * @author GrowlyX
@@ -15,7 +15,7 @@ object TopGamesRankingEntry : CgsLobbyRankingEntry
 
     override fun getValue(cgsGamePlayer: CgsGamePlayer): Int
     {
-        return SurvivalGamesLobbyEngine
+        return SkyWarsLobbyEngine
             .getStatistics(cgsGamePlayer)
             .played.value
     }
