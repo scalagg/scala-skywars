@@ -10,7 +10,7 @@ import gg.scala.skywars.plugin.lobby.ranking.TopWinsRankingEntry
 import gg.scala.skywars.plugin.lobby.scoreboard.SkyWarsLobbyScoreboard
 import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
 import gg.scala.skywars.plugin.shared.SkyWarsPlayerModel
-import gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloGamemode
+import gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloOpGamemode
 import net.evilblock.cubed.menu.Button
 import net.evilblock.cubed.util.CC
 import net.evilblock.cubed.util.bukkit.ItemBuilder
@@ -73,7 +73,7 @@ object SkyWarsLobbyEngine : CgsGameLobby<SkyWarsPlayerModel>(
             .toButton { player, _ ->
                 val server = CgsGameInfoUpdater
                     .findAvailableServer(
-                        SkyWarsSoloGamemode, "SkyWars"
+                        SkyWarsSoloOpGamemode, "SkyWars"
                     )
 
                 if (server != null)

@@ -1,7 +1,7 @@
 package gg.scala.skywars.plugin.shared
 
 import gg.scala.cgs.common.information.CgsGameGeneralInfo
-import gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloGamemode
+import gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloOpGamemode
 
 /**
  * @author GrowlyX
@@ -9,7 +9,7 @@ import gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloGamemode
  */
 object SkyWarsGameInfo : CgsGameGeneralInfo(
     "SkyWars", 0.01F, 2,
-    10, SkyWarsGameRewards, true, true,
-    true, false, true,
-    true, listOf(SkyWarsSoloGamemode)
+    10, SkyWarsGameRewards, false, true,
+    true, true, true,
+    true, listOf(SkyWarsSoloOpGamemode)
 )

@@ -94,42 +94,6 @@ object CageService
         }
     }
 
-    fun spawnJoinCage(location: Location)
-    {
-        val x = location.blockX - 9
-        val y = location.blockY - 1
-        val z = location.blockZ - 5
-        val world = location.world
-        for (x2 in x until x + 21)
-        {
-            for (y2 in y until y + 11)
-            {
-                for (z2 in z until z + 11)
-                {
-                    val block = world.getBlockAt(x2, y2, z2)
-                    if (block.type == Material.AIR)
-                    {
-                        block.type = Material.GLASS
-                    }
-                }
-            }
-        }
-        for (x2 in x + 1 until x + 20)
-        {
-            for (y2 in y + 1 until y + 10)
-            {
-                for (z2 in z + 1 until z + 10)
-                {
-                    val block = world.getBlockAt(x2, y2, z2)
-                    if (block.type == Material.GLASS)
-                    {
-                        block.type = Material.AIR
-                    }
-                }
-            }
-        }
-    }
-
     private fun deleteCage(location: Location?)
     {
         val x = location!!.blockX - 2
@@ -142,30 +106,6 @@ object CageService
             for (y2 in y until y + 5)
             {
                 for (z2 in z until z + 5)
-                {
-                    val block = world.getBlockAt(x2, y2, z2)
-                    if (block.type == Material.GLASS)
-                    {
-                        block.type = Material.AIR
-                    }
-                }
-            }
-        }
-    }
-
-    fun deleteSpawnCage()
-    {
-        val world = Bukkit.getWorlds()[0]
-        val location = Location(world, 0.0, world.spawnLocation.y - 1, 0.0)
-        val x = location.blockX - 9
-        val y = location.blockY - 1
-        val z = location.blockZ - 5
-
-        for (x2 in x until x + 21)
-        {
-            for (y2 in y until y + 11)
-            {
-                for (z2 in z until z + 11)
                 {
                     val block = world.getBlockAt(x2, y2, z2)
                     if (block.type == Material.GLASS)

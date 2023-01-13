@@ -1,1 +1,1 @@
-mode: "gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloGameMode"
+mode: "gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloOpGameMode"

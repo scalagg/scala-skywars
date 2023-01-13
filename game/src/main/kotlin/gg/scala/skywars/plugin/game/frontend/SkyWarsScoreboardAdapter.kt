@@ -5,7 +5,9 @@ import gg.scala.cgs.common.player.scoreboard.CgsGameScoreboardRenderer
 import gg.scala.cgs.common.runnable.state.StartingStateRunnable
 import gg.scala.cgs.common.states.CgsGameState
 import gg.scala.lemon.LemonConstants
+import gg.scala.skywars.plugin.game.SkyWarsGamePlugin
 import gg.scala.skywars.plugin.game.listener.SkyWarsListener
+import gg.scala.skywars.plugin.game.utilities.GameUtilities
 import net.evilblock.cubed.util.CC
 import net.evilblock.cubed.util.bukkit.Tasks
 import net.evilblock.cubed.util.time.TimeUtil
@@ -61,14 +63,11 @@ object SkyWarsScoreboardAdapter : CgsGameScoreboardRenderer
             }")
         } else if (state.isAfter(CgsGameState.STARTED))
         {
-            lines.add("Remaining:")
-            lines.add(CC.PRI + remaining + "/" + CgsGameEngine.INSTANCE.originalRemaining.size)
+            lines.add("Up Next:")
+            lines.add(CC.PRI + "Refill " + GameUtilities.secondsToTime(SkyWarsGamePlugin.plugin.chestRefillTime))
             lines.add("")
-            lines.add("Kills:")
-            lines.add(CC.PRI + SkyWarsListener.killsTracker[player.uniqueId])
-            lines.add("")
-            lines.add("Map:")
-            lines.add(CC.PRI + CgsGameEngine.INSTANCE.gameArena!!.getName())
+            lines.add("Players: " + CC.PRI + remaining + "/" + CgsGameEngine.INSTANCE.originalRemaining.size)
+            lines.add("Kills: " + CC.PRI + SkyWarsListener.killsTracker[player.uniqueId])
         }
 
         lines.add("")
