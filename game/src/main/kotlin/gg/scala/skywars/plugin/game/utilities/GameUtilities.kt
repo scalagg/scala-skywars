@@ -1,162 +1,107 @@
-package gg.scala.skywars.plugin.game.utilities;
+package gg.scala.skywars.plugin.game.utilities
 
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.GameMode;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import org.apache.commons.lang.time.DurationFormatUtils
+import org.bukkit.GameMode
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
+import org.bukkit.potion.PotionEffect
+import java.util.function.Consumer
 
-public class GameUtilities {
+object GameUtilities
+{
+    fun numberToNumeral(number: Int): String
+    {
+        return when (number)
+        {
+            1 -> "I"
+            2 -> "II"
+            3 -> "III"
+            4 -> "IV"
+            5 -> "V"
+            6 -> "VI"
+            7 -> "VII"
+            8 -> "VIII"
+            9 -> "IX"
+            10 -> "X"
+            else -> number.toString()
+        }
+    }
 
-	public static String numberToNumeral(int number) {
-		switch (number) {
-			case 1:
-				return "I";
-			case 2:
-				return "II";
-			case 3:
-				return "III";
-			case 4:
-				return "IV";
-			case 5:
-				return "V";
-			case 6:
-				return "VI";
-			case 7:
-				return "VII";
-			case 8:
-				return "VIII";
-			case 9:
-				return "IX";
-			case 10:
-				return "X";
-			default:
-				return String.valueOf(number);
-		}
-	}
+    fun getEnchantmentName(enchantment: Enchantment): String
+    {
+        var output = ""
+        when (enchantment.name)
+        {
+            "PROTECTION_ENVIRONMENTAL" -> output = "Protection"
+            "PROTECTION_FIRE" -> output = "Fire Protection"
+            "PROTECTION_FALL" -> output = "Feather Falling"
+            "PROTECTION_EXPLOSIONS" -> output = "Blast Protection"
+            "PROTECTION_PROJECTILE" -> output = "Projectile Protection"
+            "OXYGEN" -> output = "Respiration"
+            "WATER_WORKER" -> output = "Aqua Affinity"
+            "THORNS" -> output = "Thorns"
+            "DEPTH_STRIDER" -> output = "Depth Strider"
+            "DAMAGE_ALL" -> output = "Sharpness"
+            "DAMAGE_UNDEAD" -> output = "Smite"
+            "DAMAGE_ARTHROPODS" -> output = "Bane of Arthropods"
+            "KNOCKBACK" -> output = "Knockback"
+            "FIRE_ASPECT" -> output = "Fire Aspect"
+            "LOOT_BONUS_MOBS" -> output = "Looting"
+            "DIG_SPEED" -> output = "Haste"
+            "SILK_TOUCH" -> output = "Silk Touch"
+            "DURABILITY" -> output = "Unbreaking"
+            "LOOT_BONUS_BLOCKS" -> output = "Fortune"
+            "ARROW_DAMAGE" -> output = "Power"
+            "ARROW_KNOCKBACK" -> output = "Punch"
+            "ARROW_FIRE" -> output = "Flame"
+            "ARROW_INFINITE" -> output = "Infinity"
+            "LUCK" -> output = "Luck of the Sea"
+            "LURE" -> output = "Lure"
+        }
+        return output
+    }
 
-	public static String getEnchantmentName(Enchantment enchantment) {
-		String output = "";
+    fun resetPlayer(player: Player)
+    {
+        resetPlayer(player, false)
+    }
 
-		switch (enchantment.getName()) {
-			case "PROTECTION_ENVIRONMENTAL":
-				output = "Protection";
-				break;
-			case "PROTECTION_FIRE":
-				output = "Fire Protection";
-				break;
-			case "PROTECTION_FALL":
-				output = "Feather Falling";
-				break;
-			case "PROTECTION_EXPLOSIONS":
-				output = "Blast Protection";
-				break;
-			case "PROTECTION_PROJECTILE":
-				output = "Projectile Protection";
-				break;
-			case "OXYGEN":
-				output = "Respiration";
-				break;
-			case "WATER_WORKER":
-				output = "Aqua Affinity";
-				break;
-			case "THORNS":
-				output = "Thorns";
-				break;
-			case "DEPTH_STRIDER":
-				output = "Depth Strider";
-				break;
-			case "DAMAGE_ALL":
-				output = "Sharpness";
-				break;
-			case "DAMAGE_UNDEAD":
-				output = "Smite";
-				break;
-			case "DAMAGE_ARTHROPODS":
-				output = "Bane of Arthropods";
-				break;
-			case "KNOCKBACK":
-				output = "Knockback";
-				break;
-			case "FIRE_ASPECT":
-				output = "Fire Aspect";
-				break;
-			case "LOOT_BONUS_MOBS":
-				output = "Looting";
-				break;
-			case "DIG_SPEED":
-				output = "Haste";
-				break;
-			case "SILK_TOUCH":
-				output = "Silk Touch";
-				break;
-			case "DURABILITY":
-				output = "Unbreaking";
-				break;
-			case "LOOT_BONUS_BLOCKS":
-				output = "Fortune";
-				break;
-			case "ARROW_DAMAGE":
-				output = "Power";
-				break;
-			case "ARROW_KNOCKBACK":
-				output = "Punch";
-				break;
-			case "ARROW_FIRE":
-				output = "Flame";
-				break;
-			case "ARROW_INFINITE":
-				output = "Infinity";
-				break;
-			case "LUCK":
-				output = "Luck of the Sea";
-				break;
-			case "LURE":
-				output = "Lure";
-				break;
-		}
+    fun resetPlayer(player: Player, resetHeldItemSlot: Boolean)
+    {
+        player.inventory.armorContents = arrayOfNulls(4)
+        player.inventory.contents = arrayOfNulls(36)
+        player.health = 20.0
+        player.foodLevel = 20
+        player.level = 0
+        player.exp = 0f
+        player.fireTicks = 0
+        player.maximumNoDamageTicks = 20
+        player.saturation = 20f
+        player.allowFlight = false
+        player.isFlying = false
+        player.gameMode = GameMode.SURVIVAL
+        player.activePotionEffects.forEach(Consumer { effect: PotionEffect -> player.removePotionEffect(effect.type) })
+        if (resetHeldItemSlot) player.inventory.heldItemSlot = 0
+        player.updateInventory()
+    }
 
-		return output;
-	}
+    fun formatMillis(millis: Long): String
+    {
+        return DurationFormatUtils.formatDurationWords(millis, true, true)
+    }
 
-	public static void resetPlayer(Player player) {
-		GameUtilities.resetPlayer(player, false);
-	}
+    @JvmStatic
+	fun formatSeconds(seconds: Int): String
+    {
+        return formatMillis(seconds * 1000L)
+    }
 
-	public static void resetPlayer(Player player, boolean resetHeldItemSlot) {
-		player.getInventory().setArmorContents(new ItemStack[4]);
-		player.getInventory().setContents(new ItemStack[36]);
-		player.setHealth(20.0D);
-		player.setFoodLevel(20);
-		player.setLevel(0);
-		player.setExp(0f);
-		player.setFireTicks(0);
-		player.setMaximumNoDamageTicks(20);
-		player.setSaturation(20);
-		player.setAllowFlight(false);
-		player.setFlying(false);
-		player.setGameMode(GameMode.SURVIVAL);
-		player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-		if (resetHeldItemSlot) player.getInventory().setHeldItemSlot(0);
-		player.updateInventory();
-	}
-
-
-	public static String formatMillis(long millis) {
-		return DurationFormatUtils.formatDurationWords(millis, true, true);
-	}
-
-	public static String formatSeconds(int seconds) {
-		return GameUtilities.formatMillis(seconds * 1000L);
-	}
-
-	public static String secondsToTime(int secs) {
-		if (secs <= 0) return "";
-
-		int hours = secs / 3600;
-		int minutes = secs % 3600 / 60;
-		int seconds = secs % 60;
-
-		return (hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "");
-	}
+    fun secondsToTime(secs: Int): String
+    {
+        if (secs <= 0) return ""
+        val hours = secs / 3600
+        val minutes = secs % 3600 / 60
+        val seconds = secs % 60
+        return (if (hours > 0) hours.toString() + "h " else "") + (if (minutes > 0) minutes.toString() + "m " else "") + if (seconds > 0) seconds.toString() + "s" else ""
+    }
 }

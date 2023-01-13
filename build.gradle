@@ -1,5 +1,4 @@
 plugins {
-    id "java"
     id "maven-publish"
     id "org.jetbrains.kotlin.jvm" version "1.7.21"
     id "org.jetbrains.kotlin.kapt" version "1.7.21"
@@ -57,17 +56,6 @@ allprojects {
         compileOnly "com.solexgames:Grape:1.0.0"
 
         compileOnly "gg.scala.cloudsync:spigot:1.0.1"
-    }
-
-    kapt {
-        keepJavacAnnotationProcessors = true
-    }
-
-    compileJava {
-        options.compilerArgs += ["-parameters"]
-
-        options.fork = true
-        options.encoding = "UTF-8"
     }
 
     compileKotlin {

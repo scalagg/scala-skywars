@@ -1,13 +1,13 @@
-package gg.scala.skywars.plugin.game.kit.impl;
+package gg.scala.skywars.plugin.game.kit.impl
 
-import gg.scala.flavor.service.Service;
-import gg.scala.flavor.service.ignore.IgnoreAutoScan;
-import gg.scala.skywars.plugin.game.kit.KitBind;
-import net.evilblock.cubed.util.bukkit.ItemBuilder;
-import gg.scala.skywars.plugin.game.kit.Kit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
+import gg.scala.flavor.service.Service
+import gg.scala.flavor.service.ignore.IgnoreAutoScan
+import gg.scala.skywars.plugin.game.kit.Kit
+import gg.scala.skywars.plugin.game.kit.KitBind
+import net.evilblock.cubed.util.bukkit.ItemBuilder
+import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
 
 /**
  * @author puugz
@@ -16,35 +16,26 @@ import org.bukkit.inventory.ItemStack;
 @KitBind
 @Service
 @IgnoreAutoScan
-public class GladiatorKit implements Kit {
-
-	@Override
-	public String getName() {
-		return "Gladiator";
-	}
-
-	@Override
-	public Material getIcon() {
-		return Material.DIAMOND_SWORD;
-	}
-
-	@Override
-	public ItemStack[] getArmorContents() {
-		return new ItemStack[0];
-	}
-
-	@Override
-	public ItemStack[] getInventoryContents() {
-		final ItemStack sword = new ItemStack(Material.DIAMOND_SWORD);
-		final ItemStack exp = new ItemStack(Material.EXP_BOTTLE, 32);
-		final ItemStack enchantmentTable = new ItemStack(Material.ENCHANTMENT_TABLE);
-		final ItemStack anvil = new ItemStack(Material.ANVIL);
-		final ItemStack books = new ItemBuilder(Material.ENCHANTED_BOOK)
-				.enchant(Enchantment.DAMAGE_ALL, 1)
-				.amount(3)
-				.build();
-		// temp enchants
-
-		return new ItemStack[] { sword, exp, enchantmentTable, anvil, books };
-	}
+class GladiatorKit : Kit
+{
+    override val name: String
+        get() = "Gladiator"
+    override val icon: Material
+        get() = Material.DIAMOND_SWORD
+    override val armorContents: Array<ItemStack?>
+        get() = arrayOfNulls(0)
+    override val inventoryContents: Array<ItemStack?>
+        get()
+        {
+            val sword = ItemStack(Material.DIAMOND_SWORD)
+            val exp = ItemStack(Material.EXP_BOTTLE, 32)
+            val enchantmentTable = ItemStack(Material.ENCHANTMENT_TABLE)
+            val anvil = ItemStack(Material.ANVIL)
+            val books = ItemBuilder(Material.ENCHANTED_BOOK)
+                .enchant(Enchantment.DAMAGE_ALL, 1)
+                .amount(3)
+                .build()
+            // temp enchants
+            return arrayOf(sword, exp, enchantmentTable, anvil, books)
+        }
 }

@@ -1,11 +1,11 @@
-package gg.scala.skywars.plugin.game.kit.impl;
+package gg.scala.skywars.plugin.game.kit.impl
 
-import gg.scala.flavor.service.Service;
-import gg.scala.flavor.service.ignore.IgnoreAutoScan;
-import gg.scala.skywars.plugin.game.kit.Kit;
-import gg.scala.skywars.plugin.game.kit.KitBind;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
+import gg.scala.flavor.service.Service
+import gg.scala.flavor.service.ignore.IgnoreAutoScan
+import gg.scala.skywars.plugin.game.kit.Kit
+import gg.scala.skywars.plugin.game.kit.KitBind
+import org.bukkit.Material
+import org.bukkit.inventory.ItemStack
 
 /**
  * @author puugz
@@ -14,25 +14,14 @@ import org.bukkit.inventory.ItemStack;
 @KitBind
 @Service
 @IgnoreAutoScan
-public class DefaultKit implements Kit {
-
-	@Override
-	public String getName() {
-		return "Default";
-	}
-
-	@Override
-	public Material getIcon() {
-		return Material.WEB;
-	}
-
-	@Override
-	public ItemStack[] getArmorContents() {
-		return new ItemStack[0];
-	}
-
-	@Override
-	public ItemStack[] getInventoryContents() {
-		return new ItemStack[] { new ItemStack(Material.IRON_AXE), new ItemStack(Material.IRON_PICKAXE) };
-	}
+class DefaultKit : Kit
+{
+    override val name: String
+        get() = "Default"
+    override val icon: Material
+        get() = Material.WEB
+    override val armorContents: Array<ItemStack?>
+        get() = arrayOfNulls(0)
+    override val inventoryContents: Array<ItemStack?>
+        get() = arrayOf(ItemStack(Material.IRON_AXE), ItemStack(Material.IRON_PICKAXE))
 }

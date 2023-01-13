@@ -1,13 +1,13 @@
-package gg.scala.skywars.plugin.game.kit.impl;
+package gg.scala.skywars.plugin.game.kit.impl
 
-import gg.scala.flavor.service.Service;
-import gg.scala.flavor.service.ignore.IgnoreAutoScan;
-import gg.scala.skywars.plugin.game.kit.KitBind;
-import net.evilblock.cubed.util.bukkit.ItemBuilder;
-import gg.scala.skywars.plugin.game.kit.Kit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
+import gg.scala.flavor.service.Service
+import gg.scala.flavor.service.ignore.IgnoreAutoScan
+import gg.scala.skywars.plugin.game.kit.Kit
+import gg.scala.skywars.plugin.game.kit.KitBind
+import net.evilblock.cubed.util.bukkit.ItemBuilder
+import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
 
 /**
  * @author puugz
@@ -16,35 +16,24 @@ import org.bukkit.inventory.ItemStack;
 @KitBind
 @Service
 @IgnoreAutoScan
-public class RusherKit implements Kit {
-
-	@Override
-	public String getName() {
-		return "Rusher";
-	}
-
-	@Override
-	public Material getIcon() {
-		return Material.WOOD;
-	}
-
-	@Override
-	public ItemStack[] getArmorContents() {
-		return new ItemStack[0];
-	}
-
-	@Override
-	public ItemStack[] getInventoryContents() {
-		final ItemStack pickaxe = new ItemBuilder(Material.DIAMOND_PICKAXE)
-				.enchant(Enchantment.DIG_SPEED, 1)
-				.build();
-
-		final ItemStack axe = new ItemBuilder(Material.DIAMOND_AXE)
-				.enchant(Enchantment.DIG_SPEED, 1)
-				.build();
-
-		final ItemStack wood = new ItemStack(Material.WOOD, 64);
-
-		return new ItemStack[] { pickaxe, axe, null, wood };
-	}
+class RusherKit : Kit
+{
+    override val name: String
+        get() = "Rusher"
+    override val icon: Material
+        get() = Material.WOOD
+    override val armorContents: Array<ItemStack?>
+        get() = arrayOfNulls(0)
+    override val inventoryContents: Array<ItemStack?>
+        get()
+        {
+            val pickaxe = ItemBuilder(Material.DIAMOND_PICKAXE)
+                .enchant(Enchantment.DIG_SPEED, 1)
+                .build()
+            val axe = ItemBuilder(Material.DIAMOND_AXE)
+                .enchant(Enchantment.DIG_SPEED, 1)
+                .build()
+            val wood = ItemStack(Material.WOOD, 64)
+            return arrayOf(pickaxe, axe, null, wood)
+        }
 }

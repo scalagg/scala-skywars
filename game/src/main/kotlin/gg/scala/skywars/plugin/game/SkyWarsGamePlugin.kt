@@ -55,7 +55,7 @@ class SkyWarsGamePlugin : ExtendedScalaPlugin()
             loadConfig("orchestration.yml")
 
         val mode = orchestration.getString("mode")
-            ?: "gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloOpGameMode"
+            ?: "gg.scala.skywars.plugin.shared.gamemode.SkyWarsSoloOpGamemode"
 
         val modeClass = Class.forName(mode)
 
@@ -116,6 +116,7 @@ class SkyWarsGamePlugin : ExtendedScalaPlugin()
             }
         }
 
+        ChestRefillService.refillAllChests()
         logger.info("Loaded resources")
     }
 }
