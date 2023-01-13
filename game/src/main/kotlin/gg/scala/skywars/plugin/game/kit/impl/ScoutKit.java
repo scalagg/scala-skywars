@@ -1,6 +1,8 @@
 package gg.scala.skywars.plugin.game.kit.impl;
 
-import gg.scala.skywars.plugin.game.kit.KitAutoScan;
+import gg.scala.flavor.service.Service;
+import gg.scala.flavor.service.ignore.IgnoreAutoScan;
+import gg.scala.skywars.plugin.game.kit.KitBind;
 import net.evilblock.cubed.util.CC;
 import net.evilblock.cubed.util.bukkit.ItemBuilder;
 import gg.scala.skywars.plugin.game.kit.Kit;
@@ -17,7 +19,9 @@ import org.bukkit.potion.PotionType;
  * @author puugz
  * @since 19/06/2021 01:50
  */
-@KitAutoScan
+@KitBind
+@Service
+@IgnoreAutoScan
 public class ScoutKit implements Kit {
 
 	@Override

@@ -13,6 +13,8 @@ class SkyWarsPlayerModel(
     uniqueId: UUID
 ) : GameSpecificStatistics(uniqueId)
 {
+    var selectedKit: String? = null
+
     init
     {
         this.gameKills.reset()

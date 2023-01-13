@@ -1,7 +1,9 @@
 package gg.scala.skywars.plugin.game.kit.impl;
 
+import gg.scala.flavor.service.Service;
+import gg.scala.flavor.service.ignore.IgnoreAutoScan;
 import gg.scala.skywars.plugin.game.kit.Kit;
-import gg.scala.skywars.plugin.game.kit.KitAutoScan;
+import gg.scala.skywars.plugin.game.kit.KitBind;
 import net.evilblock.cubed.util.bukkit.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -10,7 +12,9 @@ import org.bukkit.inventory.ItemStack;
  * @author puugz
  * @since 19/06/2021 18:18
  */
-@KitAutoScan
+@KitBind
+@Service
+@IgnoreAutoScan
 public class TeleporterKit implements Kit {
 
 	@Override
