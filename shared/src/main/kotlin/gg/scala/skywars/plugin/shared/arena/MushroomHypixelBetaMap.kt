@@ -22,22 +22,22 @@ object MushroomHypixelBetaMap : SkyWarsMap
 
     override val cuboid = Cuboid(
         Location(
-            Bukkit.getWorld(getBukkitWorldName()),
+            Bukkit.getWorlds().first(),
             10844.500, 53.6, 19937.3
         ),
         Location(
-            Bukkit.getWorld(getBukkitWorldName()),
+            Bukkit.getWorlds().first(),
             10744.5, 154.5, 20061.5
         )
     )
 
     override fun getPreLobbyLocation() = Location(
-        Bukkit.getWorld(getBukkitWorldName()),
+        Bukkit.getWorlds().first(),
         10814.500, 128.00, 20003.500
     )
 
     override fun getSpectatorLocation() = Location(
-        Bukkit.getWorld(getBukkitWorldName()),
+        Bukkit.getWorlds().first(),
         10814.500, 121.00, 20003.500
     )
 }

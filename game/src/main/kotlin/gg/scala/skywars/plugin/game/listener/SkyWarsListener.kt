@@ -3,6 +3,8 @@ package gg.scala.skywars.plugin.game.listener
 import gg.scala.cgs.common.CgsGameEngine
 import gg.scala.cgs.common.states.CgsGameState
 import gg.scala.flavor.inject.Inject
+import gg.scala.flavor.service.Configure
+import gg.scala.flavor.service.Service
 import gg.scala.skywars.plugin.game.SkyWarsGamePlugin
 import gg.scala.skywars.plugin.game.cage.CageService
 import gg.scala.skywars.plugin.game.kit.KitService
@@ -16,7 +18,6 @@ import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -28,12 +29,19 @@ import java.util.*
  * @author GrowlyX, puugz
  * @since 12/17/2021
  */
+@Service
 object SkyWarsListener : Listener
 {
     @Inject
     lateinit var plugin: SkyWarsGamePlugin
 
     val killsTracker = mutableMapOf<UUID, Int>()
+
+    @Configure
+    fun configure()
+    {
+        plugin.server.pluginManager.registerEvents(this, plugin)
+    }
 
     @EventHandler
     fun onDeath(
@@ -76,23 +84,19 @@ object SkyWarsListener : Listener
         CageService.usedLocations.remove(event.player.uniqueId)
     }
 
+    private val thing = ItemBuilder.of(Material.BOOK)
+        .name("${CC.GOLD}Select a Kit ${CC.GRAY}(Right Click)")
+        .build()
+
     @EventHandler
     fun onInteract(event: PlayerInteractEvent)
     {
         if (
-            CgsGameEngine.INSTANCE.gameState != CgsGameState.WAITING ||
-            CgsGameEngine.INSTANCE.gameState != CgsGameState.STARTING
+            event.hasItem() &&
+            event.action.name.contains("RIGHT") &&
+            event.clickedBlock == null &&
+            event.item.isSimilar(thing)
             )
-        {
-            return
-        }
-
-        if (event.clickedBlock != null)
-        {
-            return
-        }
-
-        if (event.hasItem() && event.item.type == Material.BOOK)
         {
             KitSelectionMenu().openMenu(event.player)
         }
@@ -114,12 +118,8 @@ object SkyWarsListener : Listener
             }
 
             event.participant.inventory.clear()
-            event.participant.inventory.setItem(
-                0,
-                ItemBuilder.of(Material.BOOK)
-                    .name("${CC.GOLD}Select a Kit ${CC.GRAY}(Right Click)")
-                    .build()
-            )
+            event.participant.inventory.setItem(0, thing)
+            event.participant.updateInventory()
         }
 
         when (CgsGameEngine.INSTANCE.gameState)

@@ -17,6 +17,7 @@ import gg.scala.skywars.plugin.game.kit.KitBind
 import gg.scala.skywars.plugin.game.kit.KitService
 import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
 import gg.scala.skywars.plugin.shared.arena.SkyWarsMap
+import net.evilblock.cubed.util.bukkit.Tasks
 import org.bukkit.Material
 
 /**
@@ -79,6 +80,11 @@ class SkyWarsGamePlugin : ExtendedScalaPlugin()
         engine.initialLoad()
 
         SkyWarsEngine.INSTANCE = engine
+
+        val arena = modeClassObject
+            .getArenas().random()
+        CgsGameArenaHandler.arena = arena
+        engine.gameArena = arena
 
         val map = CgsGameArenaHandler.arena as SkyWarsMap
 
