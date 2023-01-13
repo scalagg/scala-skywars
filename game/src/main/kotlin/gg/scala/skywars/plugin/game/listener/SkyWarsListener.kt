@@ -6,14 +6,21 @@ import gg.scala.cgs.common.CgsGameEngine
 import gg.scala.cgs.common.states.CgsGameState
 import gg.scala.flavor.inject.Inject
 import gg.scala.skywars.plugin.game.SkyWarsGamePlugin
+import gg.scala.skywars.plugin.game.cage.CageService
+import gg.scala.skywars.plugin.game.kit.KitService
+import gg.scala.skywars.plugin.game.kit.selection.KitSelectionMenu
 import gg.scala.skywars.plugin.game.sit
+import gg.scala.skywars.plugin.game.tasks.ChestRefillTask
 import me.lucko.helper.utils.Players
 import net.evilblock.cubed.util.CC
+import net.evilblock.cubed.util.bukkit.ItemBuilder
+import net.evilblock.cubed.util.bukkit.Tasks
 import net.kyori.adventure.platform.bukkit.BukkitAudiences
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
@@ -21,10 +28,13 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.player.PlayerDropItemEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemHeldEvent
+import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import java.util.*
+import java.util.function.Consumer
 
 /**
  * @author GrowlyX, puugz
@@ -82,8 +92,10 @@ object SkyWarsListener : Listener
             {
 
                 audiences.player(player)
-                    .sendActionBar(LegacyComponentSerializer.legacySection()
-                        .deserialize(""))
+                    .sendActionBar(
+                        LegacyComponentSerializer.legacySection()
+                            .deserialize("")
+                    )
             }
         }
     }
@@ -116,7 +128,7 @@ object SkyWarsListener : Listener
         killsTracker[event.entity.killer.uniqueId] =
             (killsTracker[event.entity.killer.uniqueId] ?: 0) + 1
 
-        val tracker = Bukkit.getPlayer(compassTracker.inverse()[event.entity.uniqueId]);
+        val tracker = Bukkit.getPlayer(compassTracker.inverse()[event.entity.uniqueId])
 
         if (tracker != null)
         {
@@ -137,23 +149,51 @@ object SkyWarsListener : Listener
         }
     }
 
+    private val effect = PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 20 * 5, 2)
+
     @EventHandler
     fun onGameStart(
         event: CgsGameEngine.CgsGameStartEvent
     )
     {
-        Players.all()
+        Bukkit.getOnlinePlayers()
             .forEach { player ->
-                player.sit(false)
-                killsTracker[player.uniqueId] = 0
+                player.addPotionEffect(effect)
+                KitService.applyKit(player)
 
-                player.removeMetadata("spectator", plugin)
-                player.addPotionEffect(PotionEffect(PotionEffectType.REGENERATION, 10, 1))
-                Players.all()
-                    .forEach { other ->
-                        player.showPlayer(other)
-                    }
+                killsTracker[player.uniqueId] = 0
             }
+
+        CageService.openCages()
+        ChestRefillTask(false)
+    }
+
+    @EventHandler
+    fun onLeave(event: PlayerQuitEvent)
+    {
+        CageService.usedLocations.remove(event.player.uniqueId)
+    }
+
+    @EventHandler
+    fun onInteract(event: PlayerInteractEvent)
+    {
+        if (
+            CgsGameEngine.INSTANCE.gameState != CgsGameState.WAITING ||
+            CgsGameEngine.INSTANCE.gameState != CgsGameState.STARTING
+            )
+        {
+            return
+        }
+
+        if (event.clickedBlock != null)
+        {
+            return
+        }
+
+        if (event.hasItem() && event.item.type == Material.BOOK)
+        {
+            KitSelectionMenu().openMenu(event.player)
+        }
     }
 
     @EventHandler(
@@ -164,20 +204,29 @@ object SkyWarsListener : Listener
         event: CgsGameEngine.CgsGameParticipantConnectEvent
     )
     {
-        if (CgsGameEngine.INSTANCE.gameState == CgsGameState.STARTING)
-        {
-            event.participant.teleport(
-                spawnPoints[Players.all().indexOf(event.participant)]
-            )
+        val lambda = ctx@{
+            if (!CageService.teleportToCage(event.participant))
+            {
+                event.participant.kickPlayer("Couldn't find a space for you to play!")
+                return@ctx
+            }
 
-            event.participant.sit(true)
-        } else if (CgsGameEngine.INSTANCE.gameState == CgsGameState.STARTED)
-        {
-            event.participant.teleport(
-                spawnPoints[Players.all().indexOf(event.participant)]
+            event.participant.inventory.clear()
+            event.participant.inventory.setItem(
+                0,
+                ItemBuilder.of(Material.BOOK)
+                    .name("${CC.GOLD}Select a Kit ${CC.GRAY}(Right Click)")
+                    .build()
             )
+        }
 
-            killsTracker[event.participant.uniqueId] = 0
+        when (CgsGameEngine.INSTANCE.gameState)
+        {
+            CgsGameState.WAITING -> {
+                Tasks.delayed(10L, lambda)
+            }
+            CgsGameState.STARTING -> lambda()
+            else -> {}
         }
     }
 }

@@ -19,8 +19,8 @@ import java.util.concurrent.ThreadLocalRandom
 @Service
 object ChestRefillService
 {
-    private val islandChests = mutableListOf<MutableList<Location>>()
-    private val middleChests = mutableListOf<Location>()
+    val islandChests = mutableListOf<MutableList<Location>>()
+    val middleChests = mutableListOf<Location>()
 
     private fun random(): Random = ThreadLocalRandom.current()
 

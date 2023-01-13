@@ -3,6 +3,9 @@ package gg.scala.skywars.plugin.game.kit
 import gg.scala.flavor.inject.Inject
 import gg.scala.flavor.service.Service
 import gg.scala.skywars.plugin.game.SkyWarsGamePlugin
+import gg.scala.skywars.plugin.game.service.PlayerServices
+import gg.scala.skywars.plugin.game.utilities.GameUtilities
+import org.bukkit.entity.Player
 
 /**
  * @author GrowlyX
@@ -20,4 +23,18 @@ object KitService
         .firstOrNull {
             it.name.equals(name, true)
         }
+
+    fun applyKit(player: Player)
+    {
+        val model = PlayerServices.provide(player)
+
+        var selectedKit = model?.selectedKit?.let { findKitByName(it) }
+            ?: findKitByName("Armorer") ?: kits.first()
+
+        GameUtilities.resetPlayer(player)
+
+        player.inventory.contents = selectedKit.inventoryContents
+        player.inventory.armorContents = selectedKit.armorContents
+        player.updateInventory()
+    }
 }

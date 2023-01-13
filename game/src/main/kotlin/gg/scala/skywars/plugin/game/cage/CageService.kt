@@ -19,7 +19,7 @@ object CageService
     @Inject
     lateinit var plugin: SkyWarsGamePlugin
 
-    private val usedLocations = mutableMapOf<UUID, Location>()
+    val usedLocations = mutableMapOf<UUID, Location>()
     val locations = mutableListOf<Location>()
 
     fun openCages()
@@ -43,7 +43,7 @@ object CageService
             .filterNot { usedLocations.containsValue(it) }
             .firstOrNull()
 
-    private fun teleportToCage(player: Player): Boolean
+    fun teleportToCage(player: Player): Boolean
     {
         val location = unusedLocation
 
