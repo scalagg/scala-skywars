@@ -3,7 +3,6 @@ package gg.scala.skywars.plugin.game.kit.selection
 import gg.scala.skywars.plugin.game.kit.KitService
 import gg.scala.skywars.plugin.game.service.PlayerServices
 import gg.scala.skywars.plugin.game.utilities.GameUtilities
-import gg.scala.skywars.plugin.game.utilities.ItemNameUtilities
 import net.evilblock.cubed.menu.Button
 import net.evilblock.cubed.menu.Menu
 import net.evilblock.cubed.util.CC
@@ -11,6 +10,7 @@ import net.evilblock.cubed.util.bukkit.ItemBuilder
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import gg.scala.skywars.plugin.game.utilities.ItemNames
 
 /**
  * @author GrowlyX
@@ -52,7 +52,7 @@ class KitSelectionMenu : Menu()
                         continue
                     }
 
-                    description += CC.GRAY + " ● " + ChatColor.WHITE + ItemNameUtilities.lookupWithAmount(item)
+                    description += CC.GRAY + " ● " + ChatColor.WHITE + ItemNames.lookupWithAmount(item)
 
                     for (enchant in item.enchantments.entries)
                     {
