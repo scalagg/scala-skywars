@@ -33,9 +33,19 @@ import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
 )
 class SkyWarsGamePlugin : ExtendedScalaPlugin()
 {
+    companion object
+    {
+        @JvmStatic
+        lateinit var plugin: SkyWarsGamePlugin
+    }
+
+    var chestRefillTime = 180
+
     @ContainerEnable
     fun containerEnable()
     {
+        plugin = this
+
         val orchestration =
             loadConfig("orchestration.yml")
 
