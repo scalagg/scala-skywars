@@ -19,6 +19,7 @@ import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
 import gg.scala.skywars.plugin.shared.arena.SkyWarsMap
 import net.evilblock.cubed.util.bukkit.Tasks
 import org.bukkit.Material
+import kotlin.system.measureTimeMillis
 
 /**
  * @author GrowlyX
@@ -90,26 +91,30 @@ class SkyWarsGamePlugin : ExtendedScalaPlugin()
 
         logger.info("Loading resources")
 
-        for (block in map.cuboid.getBlocks())
-        {
-            val location = block.location.add(0.5, 0.0, 0.5)
-
-            when (block.type)
+        val time = measureTimeMillis {
+            for (blockLocation in map.cuboid.getBlockLocations())
             {
-                Material.BEACON ->
-                {
-                    block.type = Material.AIR
-                    block.state.update()
+                val block = blockLocation.block
+                val location = block.location.add(0.5, 0.0, 0.5)
 
-                    CageService.locations += location
+                when (block.type)
+                {
+                    Material.BEACON ->
+                    {
+                        block.type = Material.AIR
+                        block.state.update()
+
+                        CageService.locations += location
+                    }
+                    Material.CHEST -> ChestRefillService.islandChests.add(mutableListOf(block.location))
+                    Material.TRAPPED_CHEST -> ChestRefillService.middleChests.add(block.location)
+                    else -> { }
                 }
-                Material.CHEST -> ChestRefillService.islandChests.add(mutableListOf(block.location))
-                Material.TRAPPED_CHEST -> ChestRefillService.middleChests.add(block.location)
-                else -> { }
             }
+
+            ChestRefillService.refillAllChests()
         }
 
-        ChestRefillService.refillAllChests()
-        logger.info("Loaded resources")
+        logger.info("Loaded resources in ${time}ms")
     }
 }

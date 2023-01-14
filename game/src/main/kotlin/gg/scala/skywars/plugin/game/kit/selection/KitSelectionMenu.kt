@@ -25,10 +25,7 @@ class KitSelectionMenu : Menu()
     {
         val buttons = mutableMapOf<Int, Button>()
         val model = PlayerServices.provide(player)
-            ?: return kotlin.run {
-                println("model is null")
-                buttons
-            }
+            ?: return buttons
 
         for (kit in KitService.kits.sortedBy(Kit::priority))
         {
