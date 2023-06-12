@@ -2,6 +2,7 @@ package gg.scala.skywars.plugin.game.tasks
 
 import gg.scala.skywars.plugin.game.SkyWarsGamePlugin.Companion.plugin
 import gg.scala.skywars.plugin.game.chest.ChestRefillService.refillAllChests
+import gg.scala.skywars.plugin.game.listener.SkyWarsListener
 import gg.scala.skywars.plugin.game.utilities.GameUtilities.formatSeconds
 import net.evilblock.cubed.util.CC
 import org.bukkit.Bukkit
@@ -39,6 +40,13 @@ class ChestRefillTask(private val again: Boolean) : BukkitRunnable()
         {
             Bukkit.broadcastMessage(CC.GREEN + "The chests have refilled" + (if (again) " again" else "") + "!")
             refillAllChests()
+
+            SkyWarsListener.holograms
+                .onEach(
+                    SkyWarsListener.RefillHologram::destroy
+                )
+                .clear()
+
             Bukkit.getOnlinePlayers()
                 .forEach { player: Player? -> player!!.playSound(player.location, Sound.CHEST_OPEN, 5f, 1f) }
             if (!again)

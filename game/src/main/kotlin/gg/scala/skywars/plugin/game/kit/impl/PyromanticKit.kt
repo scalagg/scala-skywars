@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack
 @KitBind
 @Service
 @IgnoreAutoScan
-class PyromanticKit : Kit
+object  PyromanticKit : Kit
 {
     override val priority = 5
     override val name: String

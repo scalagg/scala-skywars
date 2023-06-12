@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionType
 @KitBind
 @Service
 @IgnoreAutoScan
-class ScoutKit : Kit
+object  ScoutKit : Kit
 {
     override val priority = 9
     override val name: String

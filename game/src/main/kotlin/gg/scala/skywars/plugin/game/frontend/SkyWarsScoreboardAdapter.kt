@@ -54,22 +54,28 @@ object SkyWarsScoreboardAdapter : CgsGameScoreboardRenderer
             }/${
                 Bukkit.getMaxPlayers()
             }")
-            lines.add("")
-            lines.add("Mode: ${CC.PRI}${
-                CgsGameEngine.INSTANCE.gameMode.getName()
-            }")
-            lines.add("Version: ${CC.PRI}${
-                CgsGameEngine.INSTANCE.gameInfo.gameVersion
-            }")
         } else if (state.isAfter(CgsGameState.STARTED))
         {
-            lines.add("Up Next:")
-            lines.add(CC.PRI + "Refill " + GameUtilities.secondsToTime(SkyWarsGamePlugin.plugin.chestRefillTime))
+            lines.add("Next Event:")
+            if (state != CgsGameState.ENDED)
+            {
+                lines.add(CC.GREEN + "Refill " + GameUtilities.secondsToTime(SkyWarsGamePlugin.plugin.chestRefillTime))
+            } else
+            {
+                lines += "${CC.RED}Game ended!"
+            }
             lines.add("")
-            lines.add("Players: " + CC.PRI + remaining + "/" + CgsGameEngine.INSTANCE.originalRemaining.size)
+            lines.add("Players left: " + CC.PRI + remaining + "/" + CgsGameEngine.INSTANCE.originalRemaining.size)
             lines.add("Kills: " + CC.PRI + SkyWarsListener.killsTracker[player.uniqueId])
         }
 
+        lines.add("")
+        lines.add("Mode: ${CC.PRI}${
+            CgsGameEngine.INSTANCE.gameMode.getName()
+        }")
+        lines.add("Version: ${CC.PRI}${
+            CgsGameEngine.INSTANCE.gameInfo.gameVersion
+        }")
         lines.add("")
         lines.add("${CC.PRI}${LemonConstants.WEB_LINK}")
         lines.add("${CC.GRAY}${CC.STRIKE_THROUGH}-----------------")

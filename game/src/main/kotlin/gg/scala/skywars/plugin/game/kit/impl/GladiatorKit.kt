@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack
 @KitBind
 @Service
 @IgnoreAutoScan
-class GladiatorKit : Kit
+object  GladiatorKit : Kit
 {
     override val priority = 2
     override val name: String

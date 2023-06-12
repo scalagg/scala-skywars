@@ -2,10 +2,12 @@ package gg.scala.skywars.plugin.lobby.scoreboard
 
 import gg.scala.cgs.common.player.handler.CgsPlayerHandler
 import gg.scala.cgs.lobby.updater.CgsGameInfoUpdater
+import gg.scala.grape.GrapeSpigotPlugin
 import gg.scala.lemon.LemonConstants
 import gg.scala.skywars.plugin.lobby.SkyWarsLobbyEngine
 import net.evilblock.cubed.scoreboard.ScoreboardAdapter
 import net.evilblock.cubed.util.CC
+import net.evilblock.cubed.util.math.Numbers
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -40,7 +42,11 @@ object SkyWarsLobbyScoreboard : ScoreboardAdapter()
         }
 
         board.add("${CC.PRI}Global:")
-        board.add(" Your coins: ${CC.GOLD}0")
+        board.add(" Your coins: ${CC.GOLD}${
+            Numbers.format(
+                GrapeSpigotPlugin.getInstance().playerHandler.getByPlayer(player).coins
+            )
+        }")
         board.add("")
 
         board.add("${CC.PRI}${LemonConstants.WEB_LINK}")

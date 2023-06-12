@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack
 @KitBind
 @Service
 @IgnoreAutoScan
-class DefaultKit : Kit
+object  DefaultKit : Kit
 {
     override val priority = 0
 

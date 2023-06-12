@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack
 @KitBind
 @Service
 @IgnoreAutoScan
-class ArcherKit : Kit
+object  ArcherKit : Kit
 {
     override val priority = 4
     override val name: String

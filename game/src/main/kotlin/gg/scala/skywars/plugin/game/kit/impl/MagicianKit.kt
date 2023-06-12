@@ -22,7 +22,7 @@ import org.bukkit.potion.PotionType
 @KitBind
 @Service
 @IgnoreAutoScan
-class MagicianKit : Kit
+object MagicianKit : Kit
 {
     override val priority = 8
     override val name: String

@@ -19,6 +19,10 @@ import gg.scala.skywars.plugin.shared.SkyWarsGameInfo
 import gg.scala.skywars.plugin.shared.arena.SkyWarsMap
 import net.evilblock.cubed.util.bukkit.Tasks
 import org.bukkit.Material
+import org.bukkit.block.Beacon
+import org.bukkit.block.Chest
+import org.bukkit.block.Furnace
+import org.bukkit.craftbukkit.v1_8_R3.block.CraftChest
 import kotlin.system.measureTimeMillis
 
 /**
@@ -91,30 +95,49 @@ class SkyWarsGamePlugin : ExtendedScalaPlugin()
 
         logger.info("Loading resources")
 
-        val time = measureTimeMillis {
-            for (blockLocation in map.cuboid.getBlockLocations())
-            {
-                val block = blockLocation.block
-                val location = block.location.add(0.5, 0.0, 0.5)
+        map.cuboid.getChunks()
+            .flatMap { it.tileEntities.toList() }
+            .forEach {
+                val location = it.block
+                    .location.add(0.5, 0.0, 0.5)
+                val block = location.block
 
-                when (block.type)
+                when (block.state)
                 {
-                    Material.BEACON ->
+                    is Beacon ->
                     {
                         block.type = Material.AIR
                         block.state.update()
 
                         CageService.locations += location
                     }
-                    Material.CHEST -> ChestRefillService.islandChests.add(mutableListOf(block.location))
-                    Material.TRAPPED_CHEST -> ChestRefillService.middleChests.add(block.location)
-                    else -> { }
+
+                    is Chest ->
+                    {
+                        if (block.type == Material.TRAPPED_CHEST)
+                        {
+                            block.type = Material.CHEST
+                            block.state.update()
+
+                            ChestRefillService
+                                .middleChests.add(block.state as CraftChest)
+                        } else
+                        {
+                            ChestRefillService.islandChests
+                                .add(mutableListOf(block.state as CraftChest))
+                        }
+                    }
+
+                    else ->
+                    {
+                    }
                 }
             }
 
-            ChestRefillService.refillAllChests()
-        }
-
-        logger.info("Loaded resources in ${time}ms")
+       runCatching {
+           ChestRefillService.refillAllChests()
+       }.onFailure {
+           it.printStackTrace()
+       }
     }
 }

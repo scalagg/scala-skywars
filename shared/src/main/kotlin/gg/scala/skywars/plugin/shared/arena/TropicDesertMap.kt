@@ -9,35 +9,35 @@ import org.bukkit.Material
  * @author GrowlyX
  * @since 12/3/2021
  */
-object MushroomHypixelBetaMap : SkyWarsMap
+object TropicDesertMap : SkyWarsMap
 {
-    override fun getId() = "mushroom"
-    override fun getName() = "Mushroom"
+    override fun getId() = "desert"
+    override fun getName() = "Desert"
 
-    override fun getMaterial() = Pair(Material.MUSHROOM_SOUP, 0)
-    override fun getDescription() = "Mushroom 4life."
-    override fun getBukkitWorldName() = "mushroom"
+    override fun getMaterial() = Pair(Material.SAND, 0)
+    override fun getDescription() = "Desert"
+    override fun getBukkitWorldName() = "desert"
 
     override fun getDirectory() = null
 
     override val cuboid = Cuboid(
         Location(
             Bukkit.getWorlds().first(),
-            10844.500, 53.6, 19937.3
+            98.221, 0.0, 106.7
         ),
         Location(
             Bukkit.getWorlds().first(),
-            10744.5, 154.5, 20061.5
+            -247.0, 0.0, -329.0
         )
     )
 
     override fun getPreLobbyLocation() = Location(
         Bukkit.getWorlds().first(),
-        10814.500, 128.00, 20003.500
+        -15.5, 79.0, -33.5
     )
 
     override fun getSpectatorLocation() = Location(
         Bukkit.getWorlds().first(),
-        10814.500, 121.00, 20003.500
+        -15.5, 79.0, -33.5
     )
 }

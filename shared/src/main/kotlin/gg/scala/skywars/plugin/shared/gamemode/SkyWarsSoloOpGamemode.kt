@@ -1,7 +1,7 @@
 package gg.scala.skywars.plugin.shared.gamemode
 
 import gg.scala.cgs.common.information.mode.CgsGameMode
-import gg.scala.skywars.plugin.shared.arena.MushroomHypixelBetaMap
+import gg.scala.skywars.plugin.shared.arena.TropicDesertMap
 import net.evilblock.cubed.util.CC
 import org.bukkit.Material
 
@@ -19,7 +19,7 @@ object SkyWarsSoloOpGamemode : CgsGameMode
     override fun getDescription() = "${CC.GRAY}An OP solo game of Skywars!"
 
     override fun getArenas() = listOf(
-        MushroomHypixelBetaMap
+        TropicDesertMap
     )
 
     override fun getTeamSize() = 1 // team size

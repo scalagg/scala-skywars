@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack
 @KitBind
 @Service
 @IgnoreAutoScan
-class ChickenKit : Kit
+object  ChickenKit : Kit
 {
     override val priority = 7
     override val name: String

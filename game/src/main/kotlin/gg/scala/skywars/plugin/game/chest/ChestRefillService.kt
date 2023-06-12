@@ -5,6 +5,7 @@ import net.evilblock.cubed.util.bukkit.ItemBuilder
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Chest
+import org.bukkit.craftbukkit.v1_8_R3.block.CraftChest
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.potion.Potion
@@ -19,8 +20,8 @@ import java.util.concurrent.ThreadLocalRandom
 @Service
 object ChestRefillService
 {
-    val islandChests = mutableListOf<MutableList<Location>>()
-    val middleChests = mutableListOf<Location>()
+    val islandChests = mutableListOf<MutableList<CraftChest>>()
+    val middleChests = mutableListOf<CraftChest>()
 
     private fun random(): Random = ThreadLocalRandom.current()
 
@@ -28,21 +29,20 @@ object ChestRefillService
     {
         islandChests.forEach {
             refillAllChests(it, 1)
+            println("thing")
         }
 
         refillAllChests(middleChests, 2)
+        println("thing2")
     }
 
     private fun refillAllChests(
-        locations: List<Location>, tier: Int
+        locations: List<CraftChest>, tier: Int
     )
     {
-        val chests = locations
-            .filter { location -> location.block.type == Material.CHEST }
-            .map { location -> location.block.state as Chest }
-            .toList()
+        println(locations.size)
 
-        for (chest in chests)
+        for (chest in locations)
         {
             val howManyItems = if (tier == 1) random().nextInt(3) + 5 else random().nextInt(3) + 4
 

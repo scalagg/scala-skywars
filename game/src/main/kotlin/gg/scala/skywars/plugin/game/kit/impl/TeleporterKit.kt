@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack
 @KitBind
 @Service
 @IgnoreAutoScan
-class TeleporterKit : Kit
+object  TeleporterKit : Kit
 {
     override val priority = 3
     override val name: String
