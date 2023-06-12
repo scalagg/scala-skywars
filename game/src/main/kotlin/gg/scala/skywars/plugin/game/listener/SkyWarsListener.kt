@@ -28,6 +28,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
+import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerQuitEvent
@@ -73,7 +74,7 @@ object SkyWarsListener : Listener
             location.block
                 .setMetadata(
                     "hologram",
-                    FixedMetadataValue(plugin, true)
+                    FixedMetadataValue(plugin, this)
                 )
 
             initializeData()
@@ -99,6 +100,27 @@ object SkyWarsListener : Listener
     }
 
     @EventHandler
+    fun BlockBreakEvent.on()
+    {
+        if (block.type != Material.CHEST)
+        {
+            return
+        }
+
+        if (block.hasMetadata("hologram"))
+        {
+            with(
+                block.getMetadata("hologram")
+                    .first().value() as RefillHologram
+            )
+            {
+                destroy()
+                holograms -= this
+            }
+        }
+    }
+
+    @EventHandler
     fun PlayerInteractEvent.on()
     {
         if (
@@ -115,7 +137,10 @@ object SkyWarsListener : Listener
         }
 
         with(
-            RefillHologram(clickedBlock.location)
+            RefillHologram(
+                clickedBlock.location
+                    .add(0.500, 0.0, 0.500)
+            )
         ) {
             create()
             holograms += this
