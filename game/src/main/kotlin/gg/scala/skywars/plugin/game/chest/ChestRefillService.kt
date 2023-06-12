@@ -37,9 +37,14 @@ object ChestRefillService
     }
 
     private fun refillAllChests(
-        locations: List<CraftChest>, tier: Int
+        _locations: List<CraftChest>, tier: Int
     )
     {
+        val locations = _locations
+            .filter {
+                runCatching { it.inventory }.getOrNull() != null
+            }
+
         println(locations.size)
 
         for (chest in locations)
